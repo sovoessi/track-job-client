@@ -23,32 +23,47 @@ const TrackJobList = () => {
 			}
 		};
 		fetchTrackJobs();
-	}, []);
+	}, [API_URL]);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return (
+			<div
+				role='status'
+				aria-live='polite'
+			>
+				Loading...
+			</div>
+		);
 	}
 
-	const displayJobs = () => {
-		if (trackJobs.length === 0) {
-			return <div>No jobs found</div>;
-		}
-		return trackJobs.map((job) => (
-			<TrackJob
-				key={job._id}
-				job={job}
-			/>
-		));
-	};
+	if (error) {
+		return <div className='text-red-500'>{error.message}</div>;
+	}
+
+	if (trackJobs.length === 0) {
+		return <div>No jobs found</div>;
+	}
 
 	return (
-		<>
-			<div className='container mx-auto p-4'>
-				<h1 className='text-2xl font-bold mb-4'>Track Job List</h1>
-				{error && <div className='text-red-500'>{error.message}</div>}
-				{displayJobs()}
+		<section style={{ paddingLeft: "5%", paddingRight: "5%" }}>
+			<h1 className='text-center text-2xl font-bold mb-4 p-4'>List of offers</h1>
+			<div
+				className='
+                grid gap-6
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-3
+            '
+				role='list'
+			>
+				{trackJobs.map((job) => (
+					<TrackJob
+						key={job._id}
+						job={job}
+					/>
+				))}
 			</div>
-		</>
+		</section>
 	);
 };
 
