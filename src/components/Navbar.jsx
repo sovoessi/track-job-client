@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -48,12 +49,12 @@ const Navbar = () => {
 					>
 						About
 					</a>
-					<a
-						href='/contact'
+					<Link
+						to='/contact-us'
 						className='text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0'
 					>
 						Contact Us
-					</a>
+					</Link>
 				</div>
 				{/* Auth Section */}
 				<div className='hidden md:block'>

@@ -30,7 +30,7 @@ function App() {
 							element={<About />}
 						/>
 						<Route
-							path='/contact'
+							path='/contact-us'
 							element={<ContactUs />}
 						/>
 						<Route

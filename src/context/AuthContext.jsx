@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
             
             setUser(response.data.user);
             setToken(response.data.token);
-            localStorage.setItem("token", response.data.token);
+            //localStorage.setItem("token", response.data.token);
             return response;
         } catch (error) {
             console.error("Error logging in:", error);
@@ -95,7 +95,7 @@ export function AuthProvider({ children }) {
             });
             setUser(response.data.user);
             setToken(response.data.token);
-            localStorage.setItem("token", response.data.token);
+            //localStorage.setItem("token", response.data.token);
         } catch (error) {
             console.error("Error registering:", error);
         }
