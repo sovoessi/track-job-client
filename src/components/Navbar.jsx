@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -10,7 +10,12 @@ const Navbar = () => {
 		<nav className='bg-white shadow-md'>
 			<div className='max-w-7xl mx-auto px-4 py-3 flex items-center justify-between'>
 				{/* Logo/Brand */}
-				<div className='text-xl font-bold text-blue-700'>TrackJob</div>
+				<Link
+					to='/'
+					className='text-xl font-bold text-blue-700'
+				>
+					TrackJob
+				</Link>
 				{/* Hamburger for mobile */}
 				<button
 					className='md:hidden flex items-center px-2 py-1 border rounded text-blue-700 border-blue-700'
@@ -37,24 +42,49 @@ const Navbar = () => {
 						menuOpen ? "flex" : "hidden"
 					} md:flex`}
 				>
-					<a
-						href='/'
-						className='text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0'
+					<NavLink
+						to='/'
+						className={({ isActive }) =>
+							`text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0 ${
+								isActive ? "text-blue-700 font-bold" : ""
+							}`
+						}
+						end
 					>
 						Home
-					</a>
-					<a
-						href='/about'
-						className='text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0'
+					</NavLink>
+					<NavLink
+						to='/about'
+						className={({ isActive }) =>
+							`text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0 ${
+								isActive ? "text-blue-700 font-bold" : ""
+							}`
+						}
 					>
 						About
-					</a>
-					<Link
+					</NavLink>
+					<NavLink
 						to='/contact-us'
-						className='text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0'
+						className={({ isActive }) =>
+							`text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0 ${
+								isActive ? "text-blue-700 font-bold" : ""
+							}`
+						}
 					>
 						Contact Us
-					</Link>
+					</NavLink>
+					{isAuthenticated && (
+						<NavLink
+							to='/dashboard'
+							className={({ isActive }) =>
+								`text-gray-700 hover:text-blue-600 font-medium transition-colors px-4 py-2 md:p-0 ${
+									isActive ? "text-blue-700 font-bold" : ""
+								}`
+							}
+						>
+							Dashboard
+						</NavLink>
+					)}
 				</div>
 				{/* Auth Section */}
 				<div className='hidden md:block'>
@@ -65,28 +95,28 @@ const Navbar = () => {
 							</span>
 							<button
 								className='px-4 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-700 font-medium transition-colors'
-								onClick={logout} // Add your logout logic here
+								onClick={logout}
 							>
 								Logout
 							</button>
 						</div>
 					) : (
-						<a
-							href='/login'
+						<NavLink
+							to='/login'
 							className='px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium transition-colors'
 						>
 							Login
-						</a>
+						</NavLink>
 					)}
 				</div>
 			</div>
 			{/* Mobile Auth Section */}
 			{menuOpen && (
 				<div className='md:hidden px-4 pb-4'>
-					{isAuthenticated ? (
+					{isAuthenticated && user ? (
 						<div className='flex flex-col space-y-2'>
 							<span className='text-gray-800 font-semibold'>
-								Hello, {user.name}
+								Hello, {user.username}
 							</span>
 							<button
 								className='px-4 py-1 bg-gray-200 rounded hover:bg-gray-300 text-gray-700 font-medium transition-colors'
@@ -96,12 +126,12 @@ const Navbar = () => {
 							</button>
 						</div>
 					) : (
-						<a
-							href='/login'
+						<NavLink
+							to='/login'
 							className='block px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium transition-colors'
 						>
 							Login
-						</a>
+						</NavLink>
 					)}
 				</div>
 			)}
