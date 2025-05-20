@@ -1,13 +1,60 @@
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
+import ContactUs from "./pages/ContactUs";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+import "./App.css";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-
-  return (
-    <>
-      <h1>Welcome to the React App</h1>
-      <p>This is a simple React application.</p>  
-    </>
-  )
+	return (
+		<>
+			<Router>
+				<AuthProvider>
+					<Navbar />
+					<Routes>
+						<Route
+							index
+							element={<Home />}
+						/>
+						<Route
+							path='/about'
+							element={<About />}
+						/>
+						<Route
+							path='/contact'
+							element={<ContactUs />}
+						/>
+						<Route
+							path='/register'
+							element={<Register />}
+						/>
+						<Route
+							path='/login'
+							element={<Login />}
+						/>
+						<Route
+							path='/dashboard'
+							element={<Dashboard />}
+						/>
+						<Route
+							path='/profile'
+							element={<Profile />}
+						/>
+					</Routes>
+					<Footer />
+				</AuthProvider>
+			</Router>
+		</>
+	);
 }
 
-export default App
+export default App;
