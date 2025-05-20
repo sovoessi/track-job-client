@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
-import { useTrackJob } from "../context/TrackJobContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
 	const [form, setForm] = useState({ email: "", password: "" });
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 
-    const location = useLocation();
-    const { navigate, login } = useTrackJob();
+	const location = useLocation();
+	const { navigate, login } = useAuth();
 
 	const handleChange = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,10 +21,12 @@ export default function Login() {
 		setLoading(true);
 		setError("");
 		try {
-			const res = login(form.email, form.password);
-            if (res.status !== 200) {
-                throw new Error("Login failed");
-            }
+			const res = await login(form.email, form.password);
+			console.log("Login response ->", res);
+
+			if (res.status !== 200) {
+				throw new Error("Login failed");
+			}
 			// Redirect or handle success
 			// Redirect to the last page or home if no previous page
 			const redirectPath = location.state?.from?.pathname || "/";
@@ -93,6 +95,15 @@ export default function Login() {
 				>
 					{loading ? "Signing in..." : "Sign In"}
 				</button>
+				<div className='mt-4 text-center text-sm'>
+					Don't have an account?{" "}
+					<Link
+						to='/register'
+						className='text-blue-600 hover:underline'
+					>
+						Register
+					</Link>
+				</div>
 			</form>
 		</div>
 	);

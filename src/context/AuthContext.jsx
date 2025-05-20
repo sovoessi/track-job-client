@@ -34,6 +34,15 @@ export function AuthProvider({ children }) {
             };
             getUser();
         }
+    }, [isAuthenticated, token]);
+
+    // Check if user is authenticated
+    useEffect(() => {
+        if (token) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
     }, [token]);
 
     // Login function
@@ -46,11 +55,15 @@ export function AuthProvider({ children }) {
             }, {
                 withCredentials: true,
             });
+            console.log("Auth context response 49 ->", response);
+            
             setUser(response.data.user);
             setToken(response.data.token);
             localStorage.setItem("token", response.data.token);
+            return response;
         } catch (error) {
             console.error("Error logging in:", error);
+            throw error;
         }
     }
 
@@ -64,7 +77,9 @@ export function AuthProvider({ children }) {
             setUser(null);
             setToken(null);
             localStorage.removeItem("token");
-        } catch (error) {
+            setIsAuthenticated(false);
+            navigate("/login");
+        } catch (error) {   
             console.error("Error logging out:", error);
         }
     }
