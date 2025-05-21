@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
 			setUser(JSON.parse(storedUser));
 			setIsAuthenticated(true);
 		}
-	}, []);
+	}, [isAuthenticated, token, user]);
 
 	// Login function
 	// This function will be used to log in the user
