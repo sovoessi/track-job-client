@@ -7,13 +7,15 @@ export function TrackJobProvider({ children }) {
 	const [jobs, setJobs] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const token = sessionStorage.getItem("token") || null;
+	const token = sessionStorage.getItem("token") || '';
+
 
 	const API_URL = import.meta.env.VITE_API_URL;
 
 	// Fetch jobs
 	const fetchJobs = async () => {
 		setLoading(true);
+		console.log("Token TrackJob", token)
 		try {
 			const res = await axios.get(`${API_URL}/jobs`, {
 				headers: {

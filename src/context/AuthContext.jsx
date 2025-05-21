@@ -8,7 +8,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
-	const [token, setToken] = useState(null);
+	const [token, setToken] = useState(sessionStorage.getItem("token")|| '');
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	const navigate = useNavigate();
@@ -67,7 +67,7 @@ export function AuthProvider({ children }) {
 				withCredentials: true,
 			});
 			setUser(null);
-			setToken(null);
+			setToken();
 			sessionStorage.removeItem("token"); // remove token
 			sessionStorage.removeItem("user"); // remove user
 			setIsAuthenticated(false);

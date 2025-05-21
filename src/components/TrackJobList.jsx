@@ -1,35 +1,21 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useTrackJob } from "../context/TrackJobContext";
 import { useAuth } from "../context/AuthContext"; // <-- import
 import TrackJob from "./TrackJob";
 
 const TrackJobList = () => {
-	const { API_URL } = useTrackJob();
+	const { API_URL, jobs } = useTrackJob();
 	const { isAuthenticated } = useAuth(); // <-- get auth state
-	const [trackJobs, setTrackJobs] = useState([]);
+	const [trackJobs, setTrackJobs] = useState(jobs || []);
 	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		if (!isAuthenticated) {
 			setIsLoading(false);
 			return;
 		}
-		const fetchTrackJobs = async () => {
-			try {
-				const response = await axios.get(`${API_URL}/jobs`, {
-					withCredentials: true,
-				});
-				setTrackJobs(response.data.jobs);
-			} catch (error) {
-				setError(error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-		fetchTrackJobs();
-	}, [API_URL, isAuthenticated]);
+		setTrackJobs(jobs);
+	}, [API_URL, isAuthenticated, jobs]);
 
 	if (!isAuthenticated) {
 		return <div className='text-center mt-8'>Please log in to view jobs.</div>;
@@ -44,10 +30,6 @@ const TrackJobList = () => {
 				Loading...
 			</div>
 		);
-	}
-
-	if (error) {
-		return <div className='text-red-500'>{error.message}</div>;
 	}
 
 	if (trackJobs.length === 0) {
