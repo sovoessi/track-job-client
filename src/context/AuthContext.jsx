@@ -59,13 +59,13 @@ export function AuthProvider({ children }) {
 	// This function will be used to log out the user
 	const logout = async () => {
 		try {
-			await axios.post(
-				`${API_URL}/auth/logout`,
-				{},
-				{
-					withCredentials: true,
-				}
-			);
+			await axios.post(`${API_URL}/auth/logout`, {
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				withCredentials: true,
+			});
 			setUser(null);
 			setToken(null);
 			sessionStorage.removeItem("token"); // remove token
