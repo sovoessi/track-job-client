@@ -80,8 +80,10 @@ export function TrackJobProvider({ children }) {
 	};
 
 	useEffect(() => {
-		fetchJobs();
-	}, [API_URL]);
+		if (token) {
+			fetchJobs();
+		}
+	}, [token]);
 
 	// Memoize context value
 	const contextValue = useMemo(
