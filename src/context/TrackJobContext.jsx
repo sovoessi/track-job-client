@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { useAuth } from "./AuthContext";
 
 const TrackJobContext = createContext();
 
@@ -8,9 +7,9 @@ export function TrackJobProvider({ children }) {
 	const [jobs, setJobs] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const { token } = JSON.parse(sessionStorage.getItem("token")) || {};
 
 	const API_URL = import.meta.env.VITE_API_URL;
-	const { token } = useAuth();
 
 	// Fetch jobs
 	const fetchJobs = async () => {
