@@ -7,7 +7,7 @@ export function TrackJobProvider({ children }) {
 	const [jobs, setJobs] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const { token } = JSON.parse(sessionStorage.getItem("token")) || {};
+	const token = sessionStorage.getItem("token") || null;
 
 	const API_URL = import.meta.env.VITE_API_URL;
 
