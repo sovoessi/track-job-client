@@ -13,44 +13,47 @@ import Footer from "./components/Footer";
 
 import "./App.css";
 import { AuthProvider } from "./context/AuthContext";
+import { TrackJobProvider } from "./context/TrackJobContext.jsx";
 
 function App() {
 	return (
 		<>
 			<Router>
 				<AuthProvider>
-					<Navbar />
-					<Routes>
-						<Route
-							index
-							element={<Home />}
-						/>
-						<Route
-							path='/about'
-							element={<About />}
-						/>
-						<Route
-							path='/contact-us'
-							element={<ContactUs />}
-						/>
-						<Route
-							path='/register'
-							element={<Register />}
-						/>
-						<Route
-							path='/login'
-							element={<Login />}
-						/>
-						<Route
-							path='/dashboard'
-							element={<Dashboard />}
-						/>
-						<Route
-							path='/profile'
-							element={<Profile />}
-						/>
-					</Routes>
-					<Footer />
+					<TrackJobProvider>
+						<Navbar />
+						<Routes>
+							<Route
+								index
+								element={<Home />}
+							/>
+							<Route
+								path='/about'
+								element={<About />}
+							/>
+							<Route
+								path='/contact-us'
+								element={<ContactUs />}
+							/>
+							<Route
+								path='/register'
+								element={<Register />}
+							/>
+							<Route
+								path='/login'
+								element={<Login />}
+							/>
+							<Route
+								path='/dashboard'
+								element={<Dashboard />}
+							/>
+							<Route
+								path='/profile'
+								element={<Profile />}
+							/>
+						</Routes>
+						<Footer />
+					</TrackJobProvider>
 				</AuthProvider>
 			</Router>
 		</>
