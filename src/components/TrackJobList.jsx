@@ -1,27 +1,16 @@
-import { useState, useEffect } from "react";
 import { useTrackJob } from "../context/TrackJobContext";
-import { useAuth } from "../context/AuthContext"; // <-- import
+import { useAuth } from "../context/AuthContext";
 import TrackJob from "./TrackJob";
 
 const TrackJobList = () => {
-	const { API_URL, jobs } = useTrackJob();
-	const { isAuthenticated } = useAuth(); // <-- get auth state
-	const [trackJobs, setTrackJobs] = useState(jobs || []);
-	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		if (!isAuthenticated) {
-			setIsLoading(false);
-			return;
-		}
-		setTrackJobs(jobs);
-	}, [API_URL, isAuthenticated, jobs]);
+	const { jobs, loading } = useTrackJob();
+	const { isAuthenticated } = useAuth();
 
 	if (!isAuthenticated) {
 		return <div className='text-center mt-8'>Please log in to view jobs.</div>;
 	}
 
-	if (isLoading) {
+	if (loading) {
 		return (
 			<div
 				role='status'
@@ -32,7 +21,7 @@ const TrackJobList = () => {
 		);
 	}
 
-	if (trackJobs.length === 0) {
+	if (!jobs || jobs.length === 0) {
 		return <div>No jobs found</div>;
 	}
 
@@ -50,7 +39,7 @@ const TrackJobList = () => {
             '
 				role='list'
 			>
-				{trackJobs.map((job) => (
+				{jobs.map((job) => (
 					<TrackJob
 						key={job._id}
 						job={job}
