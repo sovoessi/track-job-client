@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const TrackJobContext = createContext();
 
@@ -7,7 +8,7 @@ export function TrackJobProvider({ children }) {
 	const [jobs, setJobs] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const token = sessionStorage.getItem("token") || "";
+	const token = useAuth().token;
 
 	const API_URL = import.meta.env.VITE_API_URL;
 
@@ -85,7 +86,6 @@ export function TrackJobProvider({ children }) {
 	// Memoize context value
 	const contextValue = useMemo(
 		() => ({
-			API_URL,
 			jobs,
 			loading,
 			error,
@@ -94,7 +94,7 @@ export function TrackJobProvider({ children }) {
 			updateJob,
 			deleteJob,
 		}),
-		[API_URL, jobs, loading, error]
+		[jobs, loading, error]
 	);
 	return (
 		<TrackJobContext.Provider value={contextValue}>

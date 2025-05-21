@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { useTrackJob } from "./TrackJobContext";
 
 const AuthContext = createContext();
 
@@ -13,7 +12,7 @@ export function AuthProvider({ children }) {
 
 	const navigate = useNavigate();
 
-	const { API_URL } = useTrackJob();
+	const API_URL = import.meta.env.VITE_API_URL;
 
 	// Restore token and user from sessionStorage on app load
 	useEffect(() => {
@@ -31,7 +30,7 @@ export function AuthProvider({ children }) {
 				setIsAuthenticated(false);
 			}
 		}
-	}, []);
+	}, [token, user]);
 	// Login function
 	// This function will be used to log in the user
 	const login = async (email, password) => {
@@ -110,7 +109,7 @@ export function AuthProvider({ children }) {
 			token,
 			navigate,
 		}),
-		[user, isAuthenticated, token, navigate]
+		[user, isAuthenticated, token]
 	);
 	return (
 		<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
