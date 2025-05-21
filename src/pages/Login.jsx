@@ -22,7 +22,6 @@ export default function Login() {
 		setError("");
 		try {
 			const res = await login(form.email, form.password);
-			console.log("Login response 25 ->", res);
 
 			if (res.status !== 200) {
 				throw new Error("Login failed");

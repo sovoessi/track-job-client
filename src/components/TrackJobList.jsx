@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useTrackJob } from "../context/TrackJobContext";
+import { useAuth } from "../context/AuthContext"; // <-- import
 import TrackJob from "./TrackJob";
 
 const TrackJobList = () => {
 	const { API_URL } = useTrackJob();
+	const { isAuthenticated } = useAuth(); // <-- get auth state
 	const [trackJobs, setTrackJobs] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
+		if (!isAuthenticated) {
+			setIsLoading(false);
+			return;
+		}
 		const fetchTrackJobs = async () => {
 			try {
 				const response = await axios.get(`${API_URL}/jobs`, {
@@ -23,7 +29,11 @@ const TrackJobList = () => {
 			}
 		};
 		fetchTrackJobs();
-	}, [API_URL]);
+	}, [API_URL, isAuthenticated]);
+
+	if (!isAuthenticated) {
+		return <div className='text-center mt-8'>Please log in to view jobs.</div>;
+	}
 
 	if (isLoading) {
 		return (
@@ -46,7 +56,9 @@ const TrackJobList = () => {
 
 	return (
 		<section style={{ paddingLeft: "5%", paddingRight: "5%" }}>
-			<h1 className='text-center text-2xl font-bold mb-4 p-4'>List of offers</h1>
+			<h1 className='text-center text-2xl font-bold mb-4 p-4'>
+				List of offers
+			</h1>
 			<div
 				className='
                 grid gap-6

@@ -42,7 +42,6 @@ export function AuthProvider({ children }) {
 					withCredentials: true,
 				}
 			);
-			console.log("Auth context response 58 ->", response);
 
 			setUser(response.data.user);
 			setIsAuthenticated(true);
