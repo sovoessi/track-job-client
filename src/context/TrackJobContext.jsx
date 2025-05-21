@@ -8,7 +8,7 @@ export function TrackJobProvider({ children }) {
 	const [jobs, setJobs] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const token = useAuth().token;
+	const { token } = useAuth();
 
 	const API_URL = import.meta.env.VITE_API_URL;
 
