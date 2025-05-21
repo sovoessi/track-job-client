@@ -9,7 +9,7 @@ const Footer = () => {
 				</div>
 				<div className='flex justify-center md:justify-end space-x-6'>
 					<a
-						href='https://www.linkedin.com/'
+						href='https://www.linkedin.com/in/jsovoessi/'
 						target='_blank'
 						rel='noopener noreferrer'
 						className='text-gray-500 hover:text-blue-700 transition-colors'
@@ -24,7 +24,7 @@ const Footer = () => {
 						</svg>
 					</a>
 					<a
-						href='https://github.com/'
+						href='https://github.com/sovoessi/track-job-client'
 						target='_blank'
 						rel='noopener noreferrer'
 						className='text-gray-500 hover:text-gray-900 transition-colors'
@@ -39,7 +39,7 @@ const Footer = () => {
 						</svg>
 					</a>
 					<a
-						href='mailto:your@email.com'
+						href='mailto:jacques.sovoessi@gmail.com'
 						className='text-gray-500 hover:text-red-600 transition-colors'
 						aria-label='Email'
 					>
