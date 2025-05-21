@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
 const TrackJobContext = createContext();
@@ -7,15 +7,13 @@ export function TrackJobProvider({ children }) {
 	const [jobs, setJobs] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const token = sessionStorage.getItem("token") || '';
-
+	const token = sessionStorage.getItem("token") || "";
 
 	const API_URL = import.meta.env.VITE_API_URL;
 
 	// Fetch jobs
 	const fetchJobs = async () => {
 		setLoading(true);
-		console.log("Token TrackJob", token)
 		try {
 			const res = await axios.get(`${API_URL}/jobs`, {
 				headers: {
@@ -36,9 +34,10 @@ export function TrackJobProvider({ children }) {
 	const createJob = async (job) => {
 		try {
 			await axios.post(`${API_URL}/jobs`, job, {
-				headers: { "Content-Type": "application/json",
+				headers: {
+					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
-				 },
+				},
 				withCredentials: true,
 			});
 			await fetchJobs();
@@ -51,9 +50,10 @@ export function TrackJobProvider({ children }) {
 	const updateJob = async (id, job) => {
 		try {
 			await axios.put(`${API_URL}/jobs/${id}`, job, {
-				headers: { "Content-Type": "application/json",
+				headers: {
+					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
-				 },
+				},
 				withCredentials: true,
 			});
 			await fetchJobs();
@@ -66,9 +66,10 @@ export function TrackJobProvider({ children }) {
 	const deleteJob = async (id) => {
 		try {
 			await axios.delete(`${API_URL}/jobs/${id}`, {
-				headers: { "Content-Type": "application/json",
+				headers: {
+					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
-				 },
+				},
 				withCredentials: true,
 			});
 			await fetchJobs();
@@ -81,17 +82,20 @@ export function TrackJobProvider({ children }) {
 		fetchJobs();
 	}, [API_URL]);
 
-	const contextValue = {
-		API_URL,
-		jobs,
-		loading,
-		error,
-		fetchJobs,
-		createJob,
-		updateJob,
-		deleteJob,
-	};
-
+	// Memoize context value
+	const contextValue = useMemo(
+		() => ({
+			API_URL,
+			jobs,
+			loading,
+			error,
+			fetchJobs,
+			createJob,
+			updateJob,
+			deleteJob,
+		}),
+		[API_URL, jobs, loading, error]
+	);
 	return (
 		<TrackJobContext.Provider value={contextValue}>
 			{children}

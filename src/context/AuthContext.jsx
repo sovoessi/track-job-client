@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
@@ -8,7 +8,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
-	const [token, setToken] = useState(sessionStorage.getItem("token")|| '');
+	const [token, setToken] = useState(sessionStorage.getItem("token") || "");
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	const navigate = useNavigate();
@@ -23,11 +23,15 @@ export function AuthProvider({ children }) {
 			setToken(storedToken);
 		}
 		if (storedUser && !user) {
-			setUser(JSON.parse(storedUser));
-			setIsAuthenticated(true);
+			try {
+				setUser(JSON.parse(storedUser));
+				setIsAuthenticated(true);
+			} catch {
+				setUser(null);
+				setIsAuthenticated(false);
+			}
 		}
-	}, [isAuthenticated, token, user]);
-
+	}, []);
 	// Login function
 	// This function will be used to log in the user
 	const login = async (email, password) => {
@@ -96,16 +100,18 @@ export function AuthProvider({ children }) {
 		}
 	};
 
-	const contextValue = {
-		user,
-		login,
-		logout,
-		register,
-		isAuthenticated,
-		token,
-		navigate,
-	};
-
+	const contextValue = useMemo(
+		() => ({
+			user,
+			login,
+			logout,
+			register,
+			isAuthenticated,
+			token,
+			navigate,
+		}),
+		[user, isAuthenticated, token, navigate]
+	);
 	return (
 		<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
 	);
